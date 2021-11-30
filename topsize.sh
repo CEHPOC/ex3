@@ -42,10 +42,6 @@ then
     echo "topsize [--help][-h][-N][-s minsize][--][dir]"
     exit 0
 else
-    if [[ $fn = 0 ]]
-    then
-	fn="-10"
-    fi
     if [[ $fsize = 0 ]]
     then
 	fsize="+1c"
@@ -59,16 +55,16 @@ else
 	echo "Нет директории" >&2
 	exit 2
     fi
-    if [[ $fh = 1 ]]
+    if [[ $fh = 1 && $fn = 0 ]]
     then
-        find $dir -size $fsize -exec ls "{}" -nh \; >ke
-	sort -rhk5 ke > ke1
-	head $fn ke1 > ke2
-	cut -d ' ' -f 5,9 ke2
+        find $dir -size $fsize -exec ls "{}" -nh \; | sort -rhk5 | cut -d ' ' -f 5,9-
+    elif [[ $fh = 1 ]]
+    then
+	find $dir -size $fsize -exec ls "{}" -nh \; | sort -rhk5 | head $fn | cut -d ' ' -f 5,9-
+    elif [[ $fh = 0 && $fn = 0 ]]
+    then
+	find $dir -size $fsize -exec ls "{}" -n \; | sort -rhk5 | cut -d ' ' -f 5,9-
     else
-	find $dir -size $fsize -exec ls "{}" -n \; >ke
-	sort -rhk5 ke > ke1
-	head $fn ke1 > ke2
-	cut -d ' ' -f 5,9 ke2
+	find $dir -size $fsize -exec ls "{}" -n \; | sort -rhk5 | head $fn | cut -d ' ' -f 5,9-
     fi
 fi
