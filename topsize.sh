@@ -56,7 +56,7 @@ else
     fi
     if ! [ -d $dir ]
     then
-	echo "Нет директории"
+	echo "Нет директории" >&2
 	exit 2
     fi
     if [[ $fh = 1 ]]
