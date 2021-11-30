@@ -54,6 +54,11 @@ else
     then
    	dir="."
     fi
+    if ! [ -d $dir ]
+    then
+	echo "Нет директории"
+	exit 2
+    fi
     if [[ $fh = 1 ]]
     then
         find $dir -size $fsize -exec ls "{}" -nh \; >ke
